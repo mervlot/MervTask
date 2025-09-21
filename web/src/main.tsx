@@ -1,10 +1,25 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import App from "./App";
+import "./index.css";
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+// For vite-ssg
+export const createApp = () => (
+  <HelmetProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </HelmetProvider>
+);
+
+// Hydrate only in browser
+if (typeof window !== "undefined") {
+  ReactDOM.createRoot(document.getElementById("root")!).render(
+    <HelmetProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </HelmetProvider>
+  );
+}
