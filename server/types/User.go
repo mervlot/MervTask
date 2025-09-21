@@ -3,13 +3,14 @@ package types
 import "time"
 
 type Person struct {
-	ID          int64
+	ID          int
 	UserName    string
 	FirstName   string
 	LastName    string
 	Age         int
 	Email       string
 	DateOfBirth time.Time
+	Password string
 }
 type User struct {
 	UserName    string `json:"user_name" binding:"required,alphanum,min=3,max=20"` // alphanumeric, 3-20 chars

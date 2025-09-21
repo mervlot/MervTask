@@ -1,0 +1,73 @@
+# Api Design
+
+## **1. Auth Routes**
+
+| Method | Route                   | Description                   | Done |
+| ------ | ----------------------- | ----------------------------- | ---- |
+| POST   | `/auth/register`        | Register a new user           | ✅   |
+| POST   | `/auth/login`           | Login user, return JWT cookie | ✅   |
+| POST   | `/auth/logout`          | Logout user, clear cookie     | ✅   |
+| GET    | `/auth/me`              | Get logged-in user info       | ✅   |
+| POST   | `/auth/forgot-password` | Request password reset        | ❌   |
+| POST   | `/auth/reset-password`  | Reset password                | ❌   |
+
+---
+
+## **2. User Routes**
+
+| Method | Route     | Description                    | Done |
+| ------ | --------- | ------------------------------ | ---- |
+| GET    | `/users/` | Get user info (optional admin) | ✅   |
+| PATCH  | `/users/` | Update user info / password    | ✅   |
+| DELETE | `/users/` | Delete account (optional)      | ✅   |
+
+---
+
+## **3. Account Routes**
+
+| Method | Route           | Description                |
+| ------ | --------------- | -------------------------- |
+| GET    | `/accounts`     | List all user accounts     |
+| GET    | `/accounts/:id` | Get single account details |
+
+---
+
+## **4. Transaction Routes**
+
+| Method | Route               | Description                        | Done |
+| ------ | ------------------- | ---------------------------------- | ---- |
+| GET    | `/transactions`     | List all transactions (filterable) | ✅   |
+| GET    | `/transactions/:id` | Get single transaction details     | ✅   |
+| POST   | `/transactions`     | Add a new transaction              | ✅   |
+| PATCH  | `/transactions/:id` | Edit transaction                   | ✅   |
+| DELETE | `/transactions/:id` | Delete transaction                 | ✅   |
+
+---
+
+## **5. Category Routes**
+
+| Method | Route             | Description         | Done |
+| ------ | ----------------- | ------------------- | ---- |
+| GET    | `/categories`     | List all categories | ✅   |
+| GET    | `/categories/:id` | Get single category | ✅   |
+| POST   | `/categories`     | Create new category | ❌   |
+| PATCH  | `/categories/:id` | Update category     | ✅   |
+| DELETE | `/categories/:id` | Delete category     | ✅   |
+
+---
+
+## **6. Summary / Analytics Routes**
+
+| Method | Route               | Description                        | Done |
+| ------ | ------------------- | ---------------------------------- | ---- |
+| GET    | `/summary`          | Total income, expense, balances    | ✅   |
+| GET    | `/summary/monthly`  | Monthly trends (income vs expense) | ✅   |
+| GET    | `/summary/category` | Expenses per category              | ✅   |
+
+---
+
+### **Optional Advanced Routes**
+
+- `/transactions/import` – Import CSV/JSON
+- `/transactions/export` – Export CSV/JSON
+- `/dashboard` – Combined endpoint for frontend dashboard (balances, trends, recent transactions)

@@ -39,9 +39,9 @@ func main() {
 	})
 	accounts.AccountRoute(server)
 	auth.AuthRoute(server, conn)
-	categories.CategoriesRoute(server)
+	categories.CategoriesRoute(conn, server)
 	summary.SummaryRoute(server)
-	transactions.TransactionsRoute(server)
-	users.UsersRoute(server)
-	server.Run("0.0.0.0:5300")
+	transactions.TransactionsRoute(conn, server)
+	users.UsersRoute(conn,server)
+	server.Run("localhost:5300")
 }

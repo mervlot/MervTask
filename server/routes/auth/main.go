@@ -13,5 +13,7 @@ func AuthRoute(r *gin.Engine, conn *pgx.Conn) {
 	{
 		auth.POST("/login", authhandler.LoginHandler(conn))
 		auth.POST("/register", authhandler.RegisterHandler(conn))
+		auth.POST("/logout", authhandler.LogoutHandler)
+		auth.GET("/me", authhandler.MeHandler(conn))
 	}
 }
