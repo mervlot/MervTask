@@ -3,6 +3,7 @@ package authhandler
 import (
 	"mervtask/services/authentication"
 	"mervtask/services/db"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -30,7 +31,7 @@ func MeHandler(conn *pgx.Conn) gin.HandlerFunc {
 			ctx.JSON(400, gin.H{"msg": "error"})
 			return
 		}
-		userData, err := authentication.VerifyJWTRefresh("hello", cookieValue)
+		userData, err := authentication.VerifyJWTRefresh(os.Getenv("REFRESH_SECRET"), cookieValue)
 		if err != nil {
 			ctx.JSON(400, gin.H{"msg": err.Error()})
 			return

@@ -3,12 +3,13 @@ package authentication
 import (
 	"fmt"
 	"mervtask/types"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var refreshSecret = []byte("hello")
+var refreshSecret = []byte(os.Getenv("REFRESH_SECRET"))
 
 func RefreshToken(userid int, username string) (string, error) {
 
@@ -17,7 +18,7 @@ func RefreshToken(userid int, username string) (string, error) {
 		UserID:   userid,
 		UserName: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Audience: []string{"MervApps"},
+			Audience:  []string{"MervApps"},
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Issuer:    "MervID",

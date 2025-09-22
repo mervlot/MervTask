@@ -3,12 +3,13 @@ package authentication
 import (
 	"fmt"
 	"mervtask/types"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var accessSecret = []byte("hello")
+var accessSecret = []byte(os.Getenv("ACCESS_SECRET"))
 
 func AccessToken(userid int, username string, email string, age int) (string, error) {
 
