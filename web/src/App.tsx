@@ -1,22 +1,44 @@
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home.tsx";
+import { Routes, Route } from "react-router-dom";
 import About from "./pages/About.tsx";
-
+import Auth from "./security/Auth.tsx";
+import Login from "./pages/Login.tsx";
+import Register from "./pages/Register.tsx";
+import Dash from "./pages/Dash.tsx";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import Transactions from "./pages/Transactions.tsx";
+import Profile from "./pages/Profile.tsx";
 export default function App() {
   return (
     <>
-      <nav className="flex gap-4 p-4 bg-gray-900 text-white">
-        <Link to="/" className="hover:text-blue-400">
-          Home
-        </Link>
-        <Link to="/about" className="hover:text-green-400">
-          About
-        </Link>
-      </nav>
-
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Auth>
+              <Dash />
+            </Auth>
+          }
+        />
+        <Route
+          path="/hub"
+          element={
+            <Auth>
+              <Transactions />
+            </Auth>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <Auth>
+              <Profile />
+            </Auth>
+          }
+        />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );

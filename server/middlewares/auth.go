@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"mervtask/services/authentication"
 	"mervtask/services/db"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
@@ -17,12 +16,12 @@ func Validator(conn *pgx.Conn) gin.HandlerFunc {
 		refresh_cookie, _ := ctx.Cookie("refresh_token")
 
 		// verify access token
-		accessData, err := authentication.VerifyJWTAccess(os.Getenv("ACCESS_SECRET"), access_cookie)
+		accessData, err := authentication.VerifyJWTAccess(access_cookie)
 		if err != nil {
 			fmt.Println("1", err)
 
 			// if access token invalid, try refresh token
-			refreshData, eror := authentication.VerifyJWTRefresh(os.Getenv("REFRESH_SECRET"), refresh_cookie)
+			refreshData, eror := authentication.VerifyJWTRefresh(refresh_cookie)
 			if eror != nil {
 				fmt.Println("2", eror)
 
@@ -48,7 +47,7 @@ func Validator(conn *pgx.Conn) gin.HandlerFunc {
 			ctx.SetCookie("access_token", newAccess, 3600*24, "/", "", false, true)
 
 			// re-verify with the fresh token so ctx.Set has valid claims
-			accessData, _ = authentication.VerifyJWTAccess(os.Getenv("ACCESS_SECRET"), newAccess)
+			accessData, _ = authentication.VerifyJWTAccess(newAccess)
 		}
 
 		// ✅ FIX: explicitly set correct types into context

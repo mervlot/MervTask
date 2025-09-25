@@ -1,1 +1,137 @@
 @import "tailwindcss";
+
+/* Configure dark mode with data-theme attribute */
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@font-face {
+ font-family: "Poppins";
+ src: url("./assets/poppins/Poppins-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Bold";
+  src: url("./assets/poppins/Poppins-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Italic";
+  src: url("./assets/poppins/Poppins-Italic.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Medium";
+  src: url("./assets/poppins/Poppins-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Poppins-SemiBold";
+  src: url("./assets/poppins/Poppins-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Light";
+  src: url("./assets/poppins/Poppins-Light.ttf") format("truetype");
+}
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --font-poppins-bold: "Poppins-Bold", sans-serif;
+  --font-poppins-italic: "Poppins-Italic", sans-serif;
+  --font-poppins-medium: "Poppins-Medium", sans-serif;
+  --font-poppins-semi-bold: "Poppins-SemiBold", sans-serif;
+  --font-poppins-light: "Poppins-Light", sans-serif;
+}
+@utility scrollbar {
+  /* Webkit browsers (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    border-radius: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    transform: scale(1.1);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, #1d4ed8, #6d28d9);
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #f1f5f9;
+
+  /* Dark mode styles */
+  [data-theme="dark"] &::-webkit-scrollbar-track {
+    background: linear-gradient(135deg, #1e293b, #334155);
+  }
+
+  [data-theme="dark"] & {
+    scrollbar-color: #3b82f6 #1e293b;
+  }
+}
+/* Dark mode variant */
+@utility scrollbar-dark {
+  &::-webkit-scrollbar-track {
+    background: linear-gradient(135deg, rgb(15 23 42), rgb(30 41 59));
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, rgb(71 85 105), rgb(100 116 139));
+    border-color: rgb(15 23 42);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, rgb(100 116 139), rgb(148 163 184));
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, rgb(148 163 184), rgb(203 213 225));
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: rgb(15 23 42);
+  }
+
+  scrollbar-color: rgb(71 85 105) rgb(15 23 42);
+}
+
+/* Thin elegant variant */
+@utility scrollbar-thin {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 1px solid rgb(248 250 252);
+  }
+}
+
+/* Modern glass effect */
+@utility scrollbar-glass {
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}

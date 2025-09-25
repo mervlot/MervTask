@@ -11,7 +11,9 @@ import (
 	"mervtask/routes/transactions"
 	"mervtask/routes/users"
 	"os"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
@@ -30,6 +32,15 @@ func main() {
 	defer conn.Close(context.Background())
 
 	server := gin.Default()
+	server.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173"}, // your React app
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	server.Static("/img", "./server/public/img")
 	server.Static("/json", "./server/public/json")
 	server.Static("/js", "./server/public/js")
@@ -40,8 +51,8 @@ func main() {
 	accounts.AccountRoute(server)
 	auth.AuthRoute(server, conn)
 	categories.CategoriesRoute(conn, server)
-	summary.SummaryRoute(conn,server)
+	summary.SummaryRoute(conn, server)
 	transactions.TransactionsRoute(conn, server)
-	users.UsersRoute(conn,server)
+	users.UsersRoute(conn, server)
 	server.Run("localhost:5300")
 }

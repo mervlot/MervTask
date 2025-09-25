@@ -3,13 +3,10 @@ package authentication
 import (
 	"fmt"
 	"mervtask/types"
-	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
-
-var refreshSecret = []byte(os.Getenv("REFRESH_SECRET"))
 
 func RefreshToken(userid int, username string) (string, error) {
 

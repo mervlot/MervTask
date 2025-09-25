@@ -1,7 +1,6 @@
 package authhandler
 
 import (
-	"fmt"
 	"mervtask/services/authentication"
 	"mervtask/services/db"
 	"mervtask/services/security"
@@ -18,59 +17,62 @@ type user struct {
 func LoginHandler(conn *pgx.Conn) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var user user
-		// check if the json is empty you know just in case
+
+		// check if request body is empty
 		if ctx.Request.ContentLength == 0 {
 			ctx.JSON(400, gin.H{"error": "empty data"})
 			return
 		}
 
-		// bind the data into our struct
-
+		// bind JSON into struct
 		if err := ctx.ShouldBind(&user); err != nil {
-			ctx.JSON(400, gin.H{"error1": err.Error()})
+			ctx.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
 
-		//check is user exists
-		res, _ := db.CheckIfUserExist(conn, user.UserName)
-		if !res {
-			ctx.JSON(404, gin.H{
-				"error": "user not found",
-			})
+		// check if user exists
+		exists, _ := db.CheckIfUserExist(conn, user.UserName)
+		if !exists {
+			ctx.JSON(404, gin.H{"error": "user not found"})
 			return
 		}
+
 		userid, err := db.GetUserID(conn, user.UserName)
-		fmt.Println(userid)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error gui": err.Error(),
-				"msg": userid})
+			ctx.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
+
 		userData, err := db.GetUser(conn, userid)
 		if err != nil {
-			ctx.JSON(400, gin.H{"error gu": err.Error()})
-			return
-		}
-		if err := security.VerifyHashPassword(userData.Password, user.Password); err != nil {
-			ctx.JSON(200, gin.H{"msg": "invalid passord"})
-		}
-		access_token, err := authentication.AccessToken(userid, userData.UserName, userData.Email, userData.Age)
-		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": "an Error Ocured",
-			})
+			ctx.JSON(400, gin.H{"error": err.Error()})
 			return
 		}
 
-		refresh_token, err := authentication.RefreshToken(int(userData.ID), user.UserName)
-		if err != nil {
-			ctx.JSON(400, gin.H{
-				"error": "an Error Ocured",
-			})
+		// verify password
+		if err := security.VerifyHashPassword(userData.Password, user.Password); err != nil {
+			ctx.JSON(401, gin.H{"error": "invalid password"})
 			return
 		}
-		ctx.SetCookie("access_token", access_token, 24*60*60, "/", "localhost", false, true)
-		ctx.SetCookie("refresh_token", refresh_token, 30*24*60*60, "/", "localhost", false, true)
-		ctx.JSON(200, gin.H{"msg": "logged in all cookies set to roll"})
+
+		// generate access token
+		accessToken, err := authentication.AccessToken(userid, userData.UserName, userData.Email, userData.Age)
+		if err != nil {
+			ctx.JSON(500, gin.H{"error": "failed to create access token"})
+			return
+		}
+
+		// generate refresh token
+		refreshToken, err := authentication.RefreshToken(int(userData.ID), user.UserName)
+		if err != nil {
+			ctx.JSON(500, gin.H{"error": "failed to create refresh token"})
+			return
+		}
+
+		// set cookies (no domain → stick to current host)
+		ctx.SetCookie("access_token", accessToken, 24*60*60, "/", "", false, true)
+		ctx.SetCookie("refresh_token", refreshToken, 30*24*60*60, "/", "", false, true)
+
+		ctx.JSON(200, gin.H{"msg": "logged in successfully"})
 	}
 }
