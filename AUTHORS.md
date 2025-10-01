@@ -1,4 +1,4 @@
-# MervServer 1.0
+# MervExpense 1.0
 
 **Maintainers:**
 
